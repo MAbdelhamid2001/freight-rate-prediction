@@ -67,7 +67,7 @@ models/
   freight_rate_model.joblib  the fitted pipeline (cleaning -> features -> model)
   model_card.json            what was trained, on what, and how well it scored
 reports/                     figures, experiments.csv, evaluation.json, REPORT.md, .docx
-tests/                       95 tests: data, features, folds, models, inference, API, pages
+tests/                       96 tests: data, features, folds, models, inference, API, pages
 Dockerfile                   two-stage build (uv resolve -> slim runtime, non-root)
 docker-compose.yml           API + Streamlit (the app prices through the API)
 ```
@@ -178,7 +178,7 @@ non-root user and declares a `HEALTHCHECK` on `/api/health`.
 ## Tests
 
 ```bash
-uv run pytest                                  # 95 tests
+uv run pytest                                  # 96 tests
 uv run pytest --cov=freight_rate --cov=api --cov-report=term-missing
 ```
 

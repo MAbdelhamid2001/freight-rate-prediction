@@ -67,17 +67,27 @@ def figure_path(name: str) -> Path:
     return config.FIGURES_DIR / name
 
 
+def _api_down(exc: Exception) -> None:
+    # Same model, same code path: degrade to in-process pricing rather than
+    # showing the user an error because the API container is restarting.
+    st.toast(f"API unreachable ({type(exc).__name__}); pricing with the embedded model.")
+
+
 def price_loads(loads: list[dict]) -> list[float]:
     """Price loads through the API when configured, otherwise in-process."""
     url = api_url()
     if url:
         clean = [{k: v for k, v in load.items() if v is not None and not (isinstance(v, float) and pd.isna(v))}
                  for load in loads]
-        response = requests.post(f"{url}/api/predict/batch", json={"loads": clean}, timeout=30)
-        if response.status_code == 422:
-            raise ValueError(response.json().get("detail"))
-        response.raise_for_status()
-        return response.json()["predictions"]
+        try:
+            response = requests.post(f"{url}/api/predict/batch", json={"loads": clean}, timeout=30)
+        except requests.RequestException as exc:
+            _api_down(exc)
+        else:
+            if response.status_code == 422:
+                raise ValueError(response.json().get("detail"))
+            response.raise_for_status()
+            return response.json()["predictions"]
     return [round(float(r), 2) for r in load_predictor().predict_frame(pd.DataFrame(loads))]
 
 
@@ -85,11 +95,15 @@ def price_one(load: dict) -> dict:
     url = api_url()
     if url:
         clean = {k: v for k, v in load.items() if v is not None}
-        response = requests.post(f"{url}/api/predict", json=clean, timeout=15)
-        if response.status_code == 422:
-            raise ValueError(response.json().get("detail"))
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = requests.post(f"{url}/api/predict", json=clean, timeout=15)
+        except requests.RequestException as exc:
+            _api_down(exc)
+        else:
+            if response.status_code == 422:
+                raise ValueError(response.json().get("detail"))
+            response.raise_for_status()
+            return response.json()
     return load_predictor().predict_one(load)
 
 
@@ -100,7 +114,8 @@ def backend_badge() -> None:
             ok = requests.get(f"{url}/api/health", timeout=3).json().get("model_loaded", False)
         except requests.RequestException:
             ok = False
-        st.sidebar.caption(f"Backend: FastAPI at `{url}` ({'healthy' if ok else 'unreachable'})")
+        status = "healthy" if ok else "unreachable, using the embedded model"
+        st.sidebar.caption(f"Backend: FastAPI at `{url}` ({status})")
     else:
         st.sidebar.caption("Backend: embedded model (same code path as the API)")
 

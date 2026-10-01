@@ -38,3 +38,13 @@ def test_entrypoint_builds_navigation():
     app = AppTest.from_file(str(VIEWS.parent / "streamlit_app.py"), default_timeout=120)
     app.run()
     assert not app.exception, [e.message for e in app.exception]
+
+
+def test_pages_fall_back_to_the_embedded_model_when_the_api_is_down(monkeypatch):
+    # Nothing listens on port 9: every API call fails to connect.
+    monkeypatch.setenv("FREIGHT_API_URL", "http://127.0.0.1:9")
+    app = AppTest.from_file(str(VIEWS / "predict.py"), default_timeout=120)
+    app.run()
+    assert not app.exception, [e.message for e in app.exception]
+    rate = next(m for m in app.metric if m.label == "Predicted posted rate")
+    assert float(rate.value.strip("$").replace(",", "")) > 0
