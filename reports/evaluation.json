@@ -1,0 +1,172 @@
+{
+  "candidate": "ridge|no_quote|hl-none",
+  "holdout": {
+    "fold": "Sep-Oct",
+    "overall_clean": {
+      "mae": 41.549,
+      "rmse": 61.433,
+      "mape": 1.774,
+      "medape": 1.475,
+      "r2": 0.998,
+      "bias": -17.467
+    },
+    "overall_all": {
+      "mae": 97.58,
+      "rmse": 630.824,
+      "mape": 4.292,
+      "medape": 1.502,
+      "r2": 0.829,
+      "bias": -51.13
+    },
+    "within_5pct_clean": 96.84,
+    "within_10pct_clean": 99.99,
+    "by_equipment": [
+      {
+        "segment": "Dry Van",
+        "loads": 5275,
+        "mae": 36.128,
+        "rmse": 51.676,
+        "mape": 1.632,
+        "medape": 1.399,
+        "r2": 0.998,
+        "bias": -11.972
+      },
+      {
+        "segment": "Flatbed",
+        "loads": 1746,
+        "mae": 53.831,
+        "rmse": 80.779,
+        "mape": 2.238,
+        "medape": 1.786,
+        "r2": 0.997,
+        "bias": -31.791
+      },
+      {
+        "segment": "Reefer",
+        "loads": 2358,
+        "mae": 44.583,
+        "rmse": 64.852,
+        "mape": 1.749,
+        "medape": 1.445,
+        "r2": 0.998,
+        "bias": -19.154
+      }
+    ],
+    "by_distance_band": [
+      {
+        "segment": "(0, 250]",
+        "loads": 544,
+        "mae": 9.777,
+        "rmse": 13.001,
+        "mape": 2.001,
+        "medape": 1.664,
+        "r2": 0.99,
+        "bias": -5.893
+      },
+      {
+        "segment": "(1000, 1500]",
+        "loads": 1735,
+        "mae": 45.345,
+        "rmse": 57.884,
+        "mape": 1.763,
+        "medape": 1.476,
+        "r2": 0.966,
+        "bias": -18.51
+      },
+      {
+        "segment": "(1500, 2000]",
+        "loads": 1149,
+        "mae": 61.142,
+        "rmse": 78.811,
+        "mape": 1.704,
+        "medape": 1.393,
+        "r2": 0.951,
+        "bias": -24.874
+      },
+      {
+        "segment": "(2000, 3500]",
+        "loads": 1513,
+        "mae": 80.579,
+        "rmse": 106.362,
+        "mape": 1.694,
+        "medape": 1.362,
+        "r2": 0.974,
+        "bias": -29.687
+      },
+      {
+        "segment": "(250, 500]",
+        "loads": 1511,
+        "mae": 17.278,
+        "rmse": 22.532,
+        "mape": 1.811,
+        "medape": 1.49,
+        "r2": 0.98,
+        "bias": -10.103
+      },
+      {
+        "segment": "(500, 1000]",
+        "loads": 2927,
+        "mae": 29.868,
+        "rmse": 39.085,
+        "mape": 1.789,
+        "medape": 1.502,
+        "r2": 0.984,
+        "bias": -13.579
+      }
+    ],
+    "by_month": [
+      {
+        "segment": "2025-09",
+        "loads": 4606,
+        "mae": 43.493,
+        "rmse": 65.872,
+        "mape": 1.844,
+        "medape": 1.477,
+        "r2": 0.998,
+        "bias": -14.935
+      },
+      {
+        "segment": "2025-10",
+        "loads": 4773,
+        "mae": 39.674,
+        "rmse": 56.822,
+        "mape": 1.707,
+        "medape": 1.473,
+        "r2": 0.998,
+        "bias": -19.911
+      }
+    ]
+  },
+  "validation_predictions": {
+    "rows": 12000,
+    "min": 188.6,
+    "median": 2033.53,
+    "max": 6907.83,
+    "non_positive": 0,
+    "predicted_rpm_p01_p99": [
+      1.757,
+      2.98
+    ],
+    "by_equipment": {
+      "Dry Van": {
+        "predicted_median_rpm": 2.0386,
+        "sep_oct_median_rpm": 2.0511
+      },
+      "Reefer": {
+        "predicted_median_rpm": 2.2971,
+        "sep_oct_median_rpm": 2.3176
+      },
+      "Flatbed": {
+        "predicted_median_rpm": 2.2047,
+        "sep_oct_median_rpm": 2.2388
+      }
+    }
+  },
+  "inference": {
+    "single_load_ms_p50": 31.77,
+    "single_load_ms_p95": 55.82,
+    "batch_rows": 12000,
+    "batch_seconds": 0.212,
+    "batch_rows_per_second": 56497
+  }
+}

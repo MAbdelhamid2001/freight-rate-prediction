@@ -1,0 +1,210 @@
+{
+  "model_name": "freight-rate-model",
+  "trained_at_utc": "2026-10-01T12:30:43+00:00",
+  "candidate": "ridge|no_quote|hl-none",
+  "estimator": "ridge",
+  "feature_set": "no_quote",
+  "features": [
+    "distance",
+    "log_distance",
+    "crow_miles",
+    "circuity",
+    "pickup_lat",
+    "pickup_lon",
+    "delivery_lat",
+    "delivery_lon",
+    "delta_lat",
+    "delta_lon",
+    "bearing_sin",
+    "bearing_cos",
+    "is_reefer",
+    "is_flatbed",
+    "weight",
+    "day_of_week",
+    "is_weekend"
+  ],
+  "half_life_days": null,
+  "hyperparameters": {
+    "alpha": 0.006026889128682512,
+    "n_knots": 6
+  },
+  "target": "log(posted_rate), absolute-error objective (median rate)",
+  "training_rows": 47323,
+  "dropped_noisy_labels": 677,
+  "training_period": [
+    "2025-01-01",
+    "2025-10-31"
+  ],
+  "market_calendar_period": [
+    "2025-01-01",
+    "2025-12-31"
+  ],
+  "known_cities": 72,
+  "validation_design": {
+    "scheme": "expanding window, 2-month test horizon",
+    "folds": [
+      [
+        "2025-07-01",
+        "2025-07-01",
+        "2025-09-01"
+      ],
+      [
+        "2025-08-01",
+        "2025-08-01",
+        "2025-10-01"
+      ],
+      [
+        "2025-09-01",
+        "2025-09-01",
+        "2025-11-01"
+      ]
+    ],
+    "selection_metric": "cv_clean_mape"
+  },
+  "cv_metrics": {
+    "cv_all_mae": 97.26701337209208,
+    "cv_all_rmse": 622.1238568726445,
+    "cv_all_mape": 4.207836037161406,
+    "cv_all_medape": 1.5882835711878152,
+    "cv_all_r2": 0.8291860633202024,
+    "cv_all_bias": -41.465853535870984,
+    "cv_clean_mae": 44.368132146644065,
+    "cv_clean_rmse": 65.46286926153687,
+    "cv_clean_mape": 1.86317980635083,
+    "cv_clean_medape": 1.5601383196348226,
+    "cv_clean_r2": 0.997648188622807,
+    "cv_clean_bias": -9.716975845112142,
+    "cv_clean_mape_std": 0.15946953949646805,
+    "cv_all_mae_std": 4.621934228572423,
+    "holdout_all_mae": 97.57958307703373,
+    "holdout_all_rmse": 630.8236504254104,
+    "holdout_all_mape": 4.292047223191903,
+    "holdout_all_medape": 1.5024880257686315,
+    "holdout_all_r2": 0.8291255782244139,
+    "holdout_all_bias": -51.12970324992832,
+    "holdout_clean_mae": 41.54932222498779,
+    "holdout_clean_rmse": 61.43314538106269,
+    "holdout_clean_mape": 1.7742312603534032,
+    "holdout_clean_medape": 1.4750410544676478,
+    "holdout_clean_r2": 0.9980045212061147,
+    "holdout_clean_bias": -17.46741880108858
+  },
+  "cv_per_fold": [
+    {
+      "fold": "Jul-Aug",
+      "n_train": 28406,
+      "n_test": 9671,
+      "all_mae": 102.76494280230796,
+      "all_rmse": 622.7580057553234,
+      "all_mape": 4.347073336276077,
+      "all_medape": 1.8152174299433794,
+      "all_r2": 0.825454599823333,
+      "all_bias": -49.79126859972435,
+      "clean_mae": 50.78457612737523,
+      "clean_rmse": 74.20301042823664,
+      "clean_mape": 2.0871308693936355,
+      "clean_medape": 1.7853574958219,
+      "clean_r2": 0.9969498208790534,
+      "clean_bias": -18.594165051199738,
+      "noisy_rows": 133.0
+    },
+    {
+      "fold": "Aug-Sep",
+      "n_train": 33253,
+      "n_test": 9429,
+      "all_mae": 91.45651423693451,
+      "all_rmse": 612.7899144371997,
+      "all_mape": 3.9843875520162366,
+      "all_medape": 1.4471452578514352,
+      "all_r2": 0.8329780119128601,
+      "all_bias": -23.476588757960275,
+      "clean_mae": 40.77049808756918,
+      "clean_rmse": 60.75245197531125,
+      "clean_mape": 1.7281772893054512,
+      "clean_medape": 1.4200164086149205,
+      "clean_r2": 0.9979902237832531,
+      "clean_bias": 6.910656316951894,
+      "noisy_rows": 132.0
+    },
+    {
+      "fold": "Sep-Oct",
+      "n_train": 37944,
+      "n_test": 9523,
+      "all_mae": 97.57958307703373,
+      "all_rmse": 630.8236504254104,
+      "all_mape": 4.292047223191903,
+      "all_medape": 1.5024880257686315,
+      "all_r2": 0.8291255782244139,
+      "all_bias": -51.12970324992832,
+      "clean_mae": 41.54932222498779,
+      "clean_rmse": 61.43314538106269,
+      "clean_mape": 1.7742312603534032,
+      "clean_medape": 1.4750410544676478,
+      "clean_r2": 0.9980045212061147,
+      "clean_bias": -17.46741880108858,
+      "noisy_rows": 144.0
+    }
+  ],
+  "robustness_checks": {
+    "random_split_cv_clean_mape": 2.8134951626093616,
+    "time_split_cv_clean_mape": 1.86317980635083,
+    "no_noise_filter_cv_clean_mape": 1.9652641485464664,
+    "unseen_city_clean_mape": 1.7371948881526484,
+    "seen_city_clean_mape": 1.788461822819793,
+    "unseen_city_rows": 2477,
+    "hidden_cities": "Bakersfield, Hartford, Memphis, New York, San Antonio, Toledo, Tulsa, Washington"
+  },
+  "feature_importance": null,
+  "data_quality": {
+    "train": {
+      "rows": 48000,
+      "duplicate_ids": 0,
+      "duplicate_rows": 0,
+      "missing_weight": 300,
+      "missing_market_index": 374,
+      "negative_weight": 292,
+      "weight_at_cap": 1204,
+      "distance_floor_rows": 48,
+      "circuity_outliers": 111,
+      "non_positive_target": 0,
+      "suspect_rate_per_mile": 646
+    },
+    "validation": {
+      "rows": 12000,
+      "duplicate_ids": 0,
+      "duplicate_rows": 0,
+      "missing_weight": 165,
+      "missing_market_index": 249,
+      "negative_weight": 145,
+      "weight_at_cap": 301,
+      "distance_floor_rows": 21,
+      "circuity_outliers": 34,
+      "non_positive_target": null,
+      "suspect_rate_per_mile": null
+    }
+  },
+  "versions": {
+    "python": "3.11.0",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6"
+  },
+  "evaluation": {
+    "holdout_clean": {
+      "mae": 41.549,
+      "rmse": 61.433,
+      "mape": 1.774,
+      "medape": 1.475,
+      "r2": 0.998,
+      "bias": -17.467
+    },
+    "inference": {
+      "single_load_ms_p50": 31.77,
+      "single_load_ms_p95": 55.82,
+      "batch_rows": 12000,
+      "batch_seconds": 0.212,
+      "batch_rows_per_second": 56497
+    },
+    "within_5pct_clean": 96.84
+  }
+}

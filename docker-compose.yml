@@ -1,0 +1,26 @@
+# docker compose up --build
+#   API        http://localhost:8000/docs
+#   Streamlit  http://localhost:8501   (prices through the API)
+#   MLflow UI  run locally: uv run mlflow ui --backend-store-uri sqlite:///mlflow.db
+
+services:
+  api:
+    build: .
+    image: freight-rate:latest
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  app:
+    image: freight-rate:latest
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      FREIGHT_API_URL: http://api:8000
+    command: ["streamlit", "run", "app/streamlit_app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
+    ports:
+      - "8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=4)"]
+    restart: unless-stopped

@@ -1,0 +1,14 @@
+# Streamlit Community Cloud reads this file (it sits next to the entrypoint).
+# Only what the app needs to load the model and render; the model-critical
+# libraries match the versions the pipeline in models/ was trained with.
+numpy==2.4.6
+pandas==3.0.6
+scikit-learn==1.9.1
+lightgbm==4.7.0
+xgboost==3.2.0
+joblib==1.6.0
+pydantic==2.13.5
+streamlit==1.64.0
+plotly==7.1.0
+matplotlib==3.11.2
+requests==2.34.2

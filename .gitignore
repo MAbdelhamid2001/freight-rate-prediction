@@ -1,0 +1,34 @@
+# --- Assessment material: never published -------------------------------
+# The dataset, the task brief and the provided scorer stay local. See the
+# README "Data" section for where to place them before running anything.
+data/
+docs/
+score.py
+scorer_results/
+validation_predictions.csv
+Task/
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+
+# --- Tooling -----------------------------------------------------------------
+.idea/
+.vscode/
+.DS_Store
+.pytest_cache/
+.coverage
+htmlcov/
+.streamlit/secrets.toml
+
+# --- MLflow local tracking store (re-created by `freight-train`) -------------
+mlruns/
+mlartifacts/
+mlflow.db
+
+# --- Cached intermediates -----------------------------------------------------
+.cache/

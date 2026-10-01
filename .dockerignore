@@ -1,0 +1,26 @@
+.git/
+.gitignore
+.venv/
+.vscode/
+.idea/
+.cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.streamlit/secrets.toml
+
+# Never baked into the image: data, training logs and the MLflow store.
+data/
+docs/
+mlruns/
+mlartifacts/
+mlflow.db
+scorer_results/
+validation_predictions.csv
+score.py
+tests/
+Dockerfile
+docker-compose.yml

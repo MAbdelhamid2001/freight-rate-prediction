@@ -1,0 +1,17 @@
+# Runtime dependencies (pip users, the provided score.py, Docker-less hosting).
+# Generated from uv.lock; the model-critical libraries are pinned exactly so the
+# pickled pipeline in models/ loads with the versions it was trained with.
+# Training extras (MLflow, Optuna): `uv sync` or `pip install mlflow optuna python-docx`.
+numpy==2.4.6
+pandas==3.0.6
+scikit-learn==1.9.1
+lightgbm==4.7.0
+xgboost==3.2.0
+joblib==1.6.0
+pydantic==2.13.5
+fastapi[standard]==0.142.2
+uvicorn[standard]==0.54.0
+streamlit==1.64.0
+plotly==7.1.0
+matplotlib==3.11.2
+requests==2.34.2

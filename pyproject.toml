@@ -1,0 +1,70 @@
+[project]
+name = "freight-rate-prediction"
+version = "1.0.0"
+description = "Truckload freight rate prediction: time-aware validation, MLflow model selection, FastAPI service and Streamlit app"
+readme = "README.md"
+authors = [
+    { name = "Mohamed M. Abdelhamid", email = "marsoftwarehouse@gmail.com" }
+]
+requires-python = ">=3.11,<3.13"
+# Runtime only: what the API, the Streamlit app and the prediction CLI need to
+# load the trained pipeline and serve it. Training tooling lives in the
+# `train` group so the Docker image and Streamlit Cloud stay slim.
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scikit-learn>=1.6",
+    "lightgbm>=4.5",
+    "xgboost>=2.1",
+    "joblib>=1.4",
+    "pydantic>=2.8",
+    "fastapi[standard]>=0.115",
+    "uvicorn[standard]>=0.30",
+    "streamlit>=1.40",
+    "plotly>=5.24",
+    "matplotlib>=3.9",
+    "requests>=2.32",
+]
+
+[dependency-groups]
+train = [
+    "mlflow>=2.17",
+    "optuna>=4.0",
+    "python-docx>=1.1",
+]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+]
+
+[project.scripts]
+freight-train = "freight_rate.train:main"
+freight-predict = "freight_rate.predict:main"
+freight-eda = "freight_rate.eda:main"
+freight-report = "freight_rate.report:main"
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+default-groups = ["train", "dev"]
+# XGBoost's Linux wheel depends on NCCL, a ~200 MB multi-GPU library. This
+# service is CPU-only, so it is never installed.
+override-dependencies = ["nvidia-nccl-cu12; sys_platform == 'never'"]
+
+[tool.uv.build-backend]
+module-name = "freight_rate"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# api/ and app/ live at the repo root next to src/; put the root on sys.path so
+# the tests import them the same way uvicorn and streamlit do.
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+filterwarnings = [
+    # Starlette nudges towards httpx2; harmless for the in-process TestClient.
+    "ignore:Using `httpx` with `starlette.testclient`",
+    # Tests cap max_iter to stay fast; the MLP converges in real training.
+    "ignore::sklearn.exceptions.ConvergenceWarning",
+]
