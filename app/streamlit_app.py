@@ -21,8 +21,6 @@ import streamlit as st  # noqa: E402
 
 st.set_page_config(page_title="Freight Rate Prediction", page_icon=":truck:", layout="wide")
 
-from app.common import backend_badge  # noqa: E402
-
 VIEWS = ROOT / "app" / "views"
 navigation = st.navigation(
     {
@@ -38,5 +36,4 @@ navigation = st.navigation(
         ],
     }
 )
-backend_badge()
 navigation.run()

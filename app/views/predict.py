@@ -72,6 +72,6 @@ fig = go.Figure(go.Scatter(x=curve.date, y=curve.predicted_rate, mode="lines+mar
                            hovertemplate="%{x|%a %d %b %Y}<br>$%{y:,.2f}<extra></extra>"))
 fig.update_layout(height=340, margin=dict(l=10, r=10, t=10, b=10), yaxis_title="predicted rate ($)",
                   hovermode="x unified")
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 st.caption(f"Range ${curve.predicted_rate.min():,.0f} to ${curve.predicted_rate.max():,.0f}. "
            "Only the date changes; the model's date sensitivity comes from the day-of-week pattern.")

@@ -19,7 +19,7 @@ if experiments.empty or not card:
 st.write(
     f"**{len(experiments)} runs**, all scored on the same three expanding-window folds "
     "(predict Jul-Aug, Aug-Sep, Sep-Oct from everything before). Selection metric: mean MAPE on "
-    "clean labels. Every run is also in MLflow: `uv run mlflow ui --backend-store-uri sqlite:///mlflow.db`."
+    "clean labels."
 )
 
 # ---------------------------------------------------------------------------
@@ -36,7 +36,7 @@ fig = px.bar(best, x=config.SELECTION_METRIC, y="model", orientation="h", color=
              labels={config.SELECTION_METRIC: "forward-CV MAPE, clean labels (%)", "model": ""})
 fig.update_layout(height=60 * len(best) + 80, showlegend=False, margin=dict(l=10, r=10, t=10, b=10),
                   yaxis=dict(categoryorder="total descending"))
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 table = best[["model", "feature_set", "half_life_days", "cv_clean_mape", "cv_clean_mape_std",
               "holdout_clean_mape", "cv_clean_mae", "cv_all_mae", "cv_all_mape", "cv_clean_r2", "fit_seconds"]]
@@ -46,7 +46,7 @@ st.dataframe(
         "cv_clean_mae": "CV MAE $ (clean)", "cv_all_mae": "CV MAE $ (all)", "cv_all_mape": "CV MAPE % (all)",
         "cv_clean_r2": "CV R²", "fit_seconds": "CV seconds", "half_life_days": "half-life (d)",
     }).round(3),
-    hide_index=True, use_container_width=True,
+    hide_index=True, width="stretch",
 )
 
 # ---------------------------------------------------------------------------
@@ -58,13 +58,13 @@ with stage_tabs[0]:
                  color_discrete_sequence=[PRIMARY, EQUIPMENT_COLORS["Reefer"]],
                  labels={config.SELECTION_METRIC: "forward-CV MAPE %", "feature_set": "feature set"})
     fig.update_layout(height=360, margin=dict(l=10, r=10, t=10, b=10), legend_title_text="")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.caption("Market-index features and the trend feature fit the past but hurt the next two months. "
                "Dropping quote_signal, whose effect flips sign month to month, helps both families.")
 with stage_tabs[1]:
     recency = experiments[experiments.stage.isin(["recency"])]
     st.dataframe(recency[["candidate", "half_life_days", "cv_clean_mape", "holdout_clean_mape"]].round(3),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
 with stage_tabs[2]:
     tuning = experiments[experiments.stage == "tuning"].copy()
     if tuning.empty:
@@ -75,16 +75,16 @@ with stage_tabs[2]:
         fig = px.line(tuning, x="trial", y="best so far", color="model", markers=True,
                       labels={"best so far": "best forward-CV MAPE so far %", "trial": "Optuna trial"})
         fig.update_layout(height=360, margin=dict(l=10, r=10, t=10, b=10), legend_title_text="")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         hp_cols = [c for c in tuning.columns if c.startswith("hp_")]
         model_pick = st.selectbox("Trials of", sorted(tuning.model.unique()))
         part = tuning[tuning.model == model_pick].dropna(axis=1, how="all")
         st.dataframe(part[["trial", config.SELECTION_METRIC, "holdout_clean_mape"]
                           + [c for c in hp_cols if c in part]].sort_values(config.SELECTION_METRIC).round(4),
-                     hide_index=True, use_container_width=True)
+                     hide_index=True, width="stretch")
 with stage_tabs[3]:
     st.dataframe(experiments.drop(columns=[c for c in experiments.columns if c.startswith("hp_")]).round(3),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
 
 # ---------------------------------------------------------------------------
 st.subheader("Selected model")
@@ -100,7 +100,7 @@ with st.expander("Hyper-parameters and features"):
 st.markdown("**Per-fold results**")
 folds = pd.DataFrame(card["cv_per_fold"])
 st.dataframe(folds[["fold", "n_train", "n_test", "clean_mape", "clean_mae", "clean_r2", "clean_bias",
-                    "all_mape", "all_mae", "noisy_rows"]].round(3), hide_index=True, use_container_width=True)
+                    "all_mape", "all_mae", "noisy_rows"]].round(3), hide_index=True, width="stretch")
 
 checks = card.get("robustness_checks", {})
 if checks:
@@ -127,9 +127,9 @@ if evaluation_path.is_file():
     c[3].metric("R² (clean)", f"{holdout['overall_clean']['r2']:.4f}")
     seg_tabs = st.tabs(["By equipment", "By distance", "By month"])
     for tab, key in zip(seg_tabs, ("by_equipment", "by_distance_band", "by_month")):
-        tab.dataframe(pd.DataFrame(holdout[key]), hide_index=True, use_container_width=True)
+        tab.dataframe(pd.DataFrame(holdout[key]), hide_index=True, width="stretch")
     if figure_path("07_holdout_diagnostics.png").is_file():
-        st.image(str(figure_path("07_holdout_diagnostics.png")), use_container_width=True)
+        st.image(str(figure_path("07_holdout_diagnostics.png")), width="stretch")
 
     st.subheader("Inference")
     inference = evaluation["inference"]
@@ -141,7 +141,7 @@ if evaluation_path.is_file():
     c[3].metric("Nov-Dec predictions", f"{sanity['rows']:,}", help=f"${sanity['min']:,.0f} to ${sanity['max']:,.0f}")
     st.dataframe(pd.DataFrame(sanity["by_equipment"]).T.rename(columns={
         "predicted_median_rpm": "Nov-Dec predicted median $/mile",
-        "sep_oct_median_rpm": "Sep-Oct actual median $/mile"}), use_container_width=True)
+        "sep_oct_median_rpm": "Sep-Oct actual median $/mile"}), width="stretch")
 
 if figure_path("09_feature_importance.png").is_file():
     with st.expander("Feature importance"):

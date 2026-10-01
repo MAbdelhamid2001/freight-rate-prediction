@@ -107,18 +107,5 @@ def price_one(load: dict) -> dict:
     return load_predictor().predict_one(load)
 
 
-def backend_badge() -> None:
-    url = api_url()
-    if url:
-        try:
-            ok = requests.get(f"{url}/api/health", timeout=3).json().get("model_loaded", False)
-        except requests.RequestException:
-            ok = False
-        status = "healthy" if ok else "unreachable, using the embedded model"
-        st.sidebar.caption(f"Backend: FastAPI at `{url}` ({status})")
-    else:
-        st.sidebar.caption("Backend: embedded model (same code path as the API)")
-
-
 def kpi(label: str, value: str, help_text: str | None = None) -> None:
     st.metric(label, value, help=help_text)

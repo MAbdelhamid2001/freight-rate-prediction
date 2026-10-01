@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from app.common import NEUTRAL, PRIMARY, load_model_card, load_predictor, price_loads
+from app.common import NEUTRAL, PRIMARY, load_model_card, price_loads
 
 features = set(load_model_card().get("features", []))
 uses_market = any(f.startswith("market") for f in features)
@@ -41,7 +41,7 @@ fig.add_trace(go.Scatter(x=chart.date, y=chart.predicted_rate, mode="lines+marke
                          hovertemplate="%{customdata} %{x|%d %b}<br>$%{y:,.2f}<extra></extra>"))
 fig.update_layout(height=380, margin=dict(l=10, r=10, t=10, b=10), yaxis_title="predicted rate ($)",
                   showlegend=False)
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 c1, c2, c3 = st.columns(3)
 c1.metric("Mean", f"${mean_rate:,.2f}")
@@ -51,11 +51,4 @@ c3.metric("Rate per mile", f"${mean_rate / 360:.2f}")
 st.caption("The weekly ripple is learned from the data (rates peak mid-week). There is no trend across the "
            "month because the December market level sits flat, close to Sep-Oct.")
 with st.expander("Table"):
-    st.dataframe(chart, hide_index=True, use_container_width=True)
-
-try:
-    lane_reference = load_predictor().cities
-    st.caption(f"Coordinates used: Lexington {lane_reference.get('Lexington')}, "
-               f"Fort Wayne {lane_reference.get('Fort Wayne')}")
-except FileNotFoundError:
-    pass
+    st.dataframe(chart, hide_index=True, width="stretch")
